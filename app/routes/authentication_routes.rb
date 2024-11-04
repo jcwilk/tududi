@@ -19,4 +19,16 @@ class Sinatra::Application
     session.clear
     redirect '/login'
   end
+
+  # New route added to handle registering new users
+  post '/register' do
+    @user = User.new(email: params[:email], password: params[:password])
+    if @user.save
+      status 200
+      body ""
+    else
+      status 400
+      body @user.errors.full_messages.join(', ')
+    end
+  end
 end
